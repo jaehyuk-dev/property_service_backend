@@ -21,8 +21,11 @@ public class Office {
     @Column(unique = true, length = 10)
     private String officeCode; // 중개사무소 코드
 
-    @Column(nullable = false, length = 5, name = "zonecode")
-    private String zoneCode; // 우편번호
+    @Column(nullable = false, length = 255)
+    private String officeName; // 중개사무소 상호명
+
+    @Column(nullable = false, length = 5)
+    private String zonecode; // 우편번호
 
     @Column(nullable = false, length = 255)
     private String officeAddress; // 주소
@@ -47,8 +50,9 @@ public class Office {
 
 
     @Builder
-    public Office(String zoneCode, String officeAddress, String addressDetail, String presidentName, String presidentEmail, String mobileNumber, String phoneNumber) {
-        this.zoneCode = zoneCode;
+    public Office(String officeName, String zonecode, String officeAddress, String addressDetail, String presidentName, String presidentEmail, String mobileNumber, String phoneNumber) {
+        this.officeName = officeName;
+        this.zonecode = zonecode;
         this.officeAddress = officeAddress;
         this.addressDetail = addressDetail;
         this.presidentName = presidentName;
