@@ -1,9 +1,11 @@
 package com.propertyservice.property_service.controller;
 
+import com.propertyservice.property_service.dto.common.ApiResponseDto;
+import com.propertyservice.property_service.dto.common.ErrorResponseDto;
+import com.propertyservice.property_service.dto.common.SuccessResponseDto;
 import com.propertyservice.property_service.service.HealthCheckService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name="Health Check")
+@Tag(name = "Health Check", description = "애플리케이션 상태 확인 API")
 public class HealthCheckController {
 
     private final HealthCheckService healthCheckService;
@@ -28,21 +30,17 @@ public class HealthCheckController {
     @Operation(summary = "healthCheck", description = "애플리케이션 상태 확인 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "애플리케이션이 정상 작동 중",
-                    content = @Content(mediaType = "text/plain",
-                            schema = @Schema(implementation = String.class),
-                            examples = @ExampleObject(value = "Application is healthy"))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "애플리케이션이 비정상 상태",
-                    content = @Content(mediaType = "text/plain",
-                            schema = @Schema(implementation = String.class),
-                            examples = @ExampleObject(value = "Application is not healthy")))
+                    content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
+    public ResponseEntity<ApiResponseDto<?>> healthCheck() {
         if (healthCheckService.checkApplicationHealth()) {
-            return ResponseEntity.ok("Application is healthy");
+            return ResponseEntity.ok(new SuccessResponseDto<>("Application is healthy"));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Application is not healthy");
+                    .body(new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "Application is not healthy"));
         }
     }
 }

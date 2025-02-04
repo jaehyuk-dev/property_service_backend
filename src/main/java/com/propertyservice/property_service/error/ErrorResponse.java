@@ -27,21 +27,29 @@ public class ErrorResponse {
 
     public static String createErrorMessage(BindingResult bindingResult) {
         StringBuilder sb = new StringBuilder();
-        boolean isFirst = true;
 
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            if (isFirst) {
-                sb.append(" ");
-            } else {
-                isFirst = false;
+            if (!sb.isEmpty()) {
+                sb.append("; "); // 또는 ", " 사용 가능
             }
-//            sb.append("[");
-            sb.append(fieldError.getField());
-//            sb.append("]");
-            sb.append(": ");
-            sb.append(fieldError.getDefaultMessage());
-            sb.append("\n");
+            sb.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage());
         }
+
+        //        boolean isFirst = true;
+
+//        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+//            if (isFirst) {
+//                sb.append(" ");
+//            } else {
+//                isFirst = false;
+//            }
+////            sb.append("[");
+//            sb.append(fieldError.getField());
+////            sb.append("]");
+//            sb.append(": ");
+//            sb.append(fieldError.getDefaultMessage());
+//            sb.append("\n");
+//        }
 
         return sb.toString();
     }

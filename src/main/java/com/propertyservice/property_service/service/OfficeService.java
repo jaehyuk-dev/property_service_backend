@@ -2,6 +2,7 @@ package com.propertyservice.property_service.service;
 
 import com.propertyservice.property_service.domain.office.Office;
 import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
+import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
 import com.propertyservice.property_service.repository.office.OfficeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class OfficeService {
      * @return
      */
     @Transactional
-    public String registerOffice(OfficeRegisterRequest request) {
+    public OfficeRegisterResponse registerOffice(OfficeRegisterRequest request) {
         String officeCode = generateUniqueOfficeCode(request.getOfficeName(), request.getZoneCode());
 
         log.info("officeCode: {}", officeCode);
@@ -43,7 +44,11 @@ public class OfficeService {
                 .build();
 
         officeRepository.save(office);
-        return officeCode;
+
+        OfficeRegisterResponse response = new OfficeRegisterResponse();
+        response.setOfficeCode(officeCode);
+
+        return response;
     }
 
     /**
