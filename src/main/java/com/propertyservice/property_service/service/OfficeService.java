@@ -3,6 +3,10 @@ package com.propertyservice.property_service.service;
 import com.propertyservice.property_service.domain.office.Office;
 import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
 import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
+import com.propertyservice.property_service.dto.office.OfficeSearchRequest;
+import com.propertyservice.property_service.dto.office.OfficeSearchResponse;
+import com.propertyservice.property_service.error.ErrorCode;
+import com.propertyservice.property_service.error.exception.BusinessException;
 import com.propertyservice.property_service.repository.office.OfficeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +25,7 @@ public class OfficeService {
     private final OfficeRepository officeRepository;
 
     /**
-     * 회사 등록 및 회사 코드 발급
+     * 중개업소 등록 및 중개업소 코드 발급
      * @param request
      * @return
      */
@@ -159,4 +163,22 @@ public class OfficeService {
         // 부족하면 전체를 사용하되, 랜덤값 추가
         return Integer.parseInt(numericPart) * 10 + new SecureRandom().nextInt(9);
     }
+
+    /**
+     * 중개업소 조회
+     * @param request
+     * @return
+     */
+    public OfficeSearchResponse searchOffice(OfficeSearchRequest request) {
+        // 중개업소 코드로 조회
+        Office office = officeRepository.findByOfficeCode(request.getOfficeCode())
+                .orElseThrow(() -> new BusinessException(ErrorCode.OFFICE_NOT_FOUND));
+
+        // 조회된 데이터를 응답 객체에 매핑
+        return OfficeSearchResponse.builder()
+                .officeName(office.getOfficeName())
+                .presidentName(office.getPresidentName())
+                .build();
+    }
+
 }
