@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     OFFICE_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "중개업소를 찾을 수 없습니다."),
 
+    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "409", "중복된 이메일 입니다."),
+
     // 공통 에러
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "40001", "잘못된 요청입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "40101", "인증되지 않았습니다."),

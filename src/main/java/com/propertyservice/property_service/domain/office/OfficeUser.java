@@ -2,6 +2,7 @@ package com.propertyservice.property_service.domain.office;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +34,14 @@ public class OfficeUser {
     @Convert(converter = RoleConverter.class)
     @Column(nullable = false)
     private Role role; // 권한 수준 (DB에서는 10 또는 20으로 저장)
+
+    @Builder
+    public OfficeUser(Office office, String name, String email, String passwordHash, String phoneNumber, Role role) {
+        this.office = office;
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+    }
 }
