@@ -1,0 +1,7 @@
+package com.propertyservice.property_service.repository.office;
+
+import com.propertyservice.property_service.domain.office.OfficeUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OfficeUserRepository extends JpaRepository<OfficeUser, Long> {
+}
