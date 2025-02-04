@@ -8,19 +8,22 @@
 
 ```sql
 -- office 테이블 생성
-CREATE TABLE office (
-    office_id       BIGSERIAL PRIMARY KEY,
-    office_code     VARCHAR(10) UNIQUE,
-    zonecode        VARCHAR(5)   NOT NULL,
-    office_address  VARCHAR(255) NOT NULL,
-    address_detail  VARCHAR(255),
-    president_name  VARCHAR(255),
-    president_email VARCHAR(255),
-    mobile_number   VARCHAR(255),
-    phone_number    VARCHAR(255)
+-- auto-generated definition
+create table office
+(
+    office_id       bigserial
+        primary key,
+    office_name     varchar(255) not null,
+    office_code     varchar(10)
+        unique,
+    zonecode        varchar(5)   not null,
+    office_address  varchar(255) not null,
+    address_detail  varchar(255),
+    president_name  varchar(255),
+    president_email varchar(255) not null,
+    mobile_number   varchar(255),
+    phone_number    varchar(255)
 );
-
-ALTER TABLE office OWNER TO admin;
 
 -- office_users 테이블 생성
 CREATE TABLE office_users (
