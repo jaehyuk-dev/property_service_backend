@@ -18,7 +18,7 @@ public class Office {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long officeId; // 중개사무소 ID
 
-    @Column(unique = true, length = 10)
+    @Column(unique = true, length = 255)
     private String officeCode; // 중개사무소 코드
 
     @Column(nullable = false, length = 255)
@@ -50,7 +50,8 @@ public class Office {
 
 
     @Builder
-    public Office(String officeName, String zonecode, String officeAddress, String addressDetail, String presidentName, String presidentEmail, String mobileNumber, String phoneNumber) {
+    public Office(String officeCode, String officeName, String zonecode, String officeAddress, String addressDetail, String presidentName, String presidentEmail, String mobileNumber, String phoneNumber) {
+        this.officeCode = officeCode;
         this.officeName = officeName;
         this.zonecode = zonecode;
         this.officeAddress = officeAddress;
