@@ -1,12 +1,11 @@
 package com.propertyservice.property_service.config;
 
-import com.propertyservice.property_service.dto.office.CustomUserDetails;
+import com.propertyservice.property_service.dto.auth.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

@@ -1,8 +1,8 @@
 package com.propertyservice.property_service.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.propertyservice.property_service.dto.office.CustomUserDetails;
-import com.propertyservice.property_service.dto.office.LoginRequest;
+import com.propertyservice.property_service.dto.auth.CustomUserDetails;
+import com.propertyservice.property_service.dto.auth.LoginRequest;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
 import jakarta.servlet.FilterChain;

@@ -2,9 +2,7 @@ package com.propertyservice.property_service.controller;
 
 import com.propertyservice.property_service.dto.common.ApiResponseDto;
 import com.propertyservice.property_service.dto.common.SuccessResponseDto;
-import com.propertyservice.property_service.dto.office.LoginRequest;
-import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
-import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
+import com.propertyservice.property_service.dto.auth.LoginRequest;
 import com.propertyservice.property_service.dto.office.OfficeUserSignUpRequest;
 import com.propertyservice.property_service.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,15 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController

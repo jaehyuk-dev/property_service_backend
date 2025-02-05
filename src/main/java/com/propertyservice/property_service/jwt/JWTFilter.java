@@ -1,15 +1,11 @@
 package com.propertyservice.property_service.jwt;
 
-import com.propertyservice.property_service.domain.office.OfficeUser;
-import com.propertyservice.property_service.domain.office.Role;
-import com.propertyservice.property_service.dto.office.CustomUserDetails;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 

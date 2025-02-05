@@ -11,6 +11,10 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "사용자를 찾을 수 없습니다."),
     INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, "401", "사용자 인증 정보가 올바르지 않습니다."),
+    SAME_PASSWORD_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "400", "이전과 같은 비밀번호는 사용할 수 없습니다."),
+    WEAK_PASSWORD(HttpStatus.UNAUTHORIZED, "400", "비밀번호는 최소 8자 이상, 숫자 포함, 특수문자 포함해야합니다."),
+
+
 
     // 공통 에러
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "40001", "잘못된 요청입니다."),

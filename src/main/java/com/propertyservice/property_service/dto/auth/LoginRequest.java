@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.dto.office;
+package com.propertyservice.property_service.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

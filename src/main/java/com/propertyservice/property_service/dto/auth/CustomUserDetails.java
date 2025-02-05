@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.dto.office;
+package com.propertyservice.property_service.dto.auth;
 
 import com.propertyservice.property_service.domain.office.OfficeUser;
 import org.springframework.security.core.GrantedAuthority;

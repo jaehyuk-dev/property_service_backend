@@ -3,10 +3,7 @@ package com.propertyservice.property_service.controller;
 import com.propertyservice.property_service.domain.office.Office;
 import com.propertyservice.property_service.dto.common.ApiResponseDto;
 import com.propertyservice.property_service.dto.common.SuccessResponseDto;
-import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
-import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
-import com.propertyservice.property_service.dto.office.OfficeSearchRequest;
-import com.propertyservice.property_service.dto.office.OfficeSearchResponse;
+import com.propertyservice.property_service.dto.office.*;
 import com.propertyservice.property_service.service.HealthCheckService;
 import com.propertyservice.property_service.service.OfficeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +62,20 @@ public class OfficeController {
         return ResponseEntity.ok(new SuccessResponseDto<>(
                 officeService.searchOffice(request)
         ));
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "사무소 사용자가 기존 비밀번호를 입력하고 새 비밀번호로 변경합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PutMapping("/user/password")
+    public ResponseEntity<ApiResponseDto<String>> changePassword(@RequestBody @Validated OfficeUserPasswordChangeRequest request) {
+        officeService.changePassword(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("Password updated successfully"));
     }
 }

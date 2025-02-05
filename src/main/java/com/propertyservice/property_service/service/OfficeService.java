@@ -1,15 +1,17 @@
 package com.propertyservice.property_service.service;
 
 import com.propertyservice.property_service.domain.office.Office;
-import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
-import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
-import com.propertyservice.property_service.dto.office.OfficeSearchRequest;
-import com.propertyservice.property_service.dto.office.OfficeSearchResponse;
+import com.propertyservice.property_service.domain.office.OfficeUser;
+import com.propertyservice.property_service.dto.auth.CustomUserDetails;
+import com.propertyservice.property_service.dto.office.*;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
 import com.propertyservice.property_service.repository.office.OfficeRepository;
+import com.propertyservice.property_service.repository.office.OfficeUserRepository;
+import com.propertyservice.property_service.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OfficeService {
     private final OfficeRepository officeRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final OfficeUserRepository officeUserRepository;
 
     /**
      * 중개업소 등록 및 중개업소 코드 발급
@@ -181,4 +185,24 @@ public class OfficeService {
                 .build();
     }
 
+    /**
+     * 사용자 비밀번호 변경
+     * @param request
+     */
+    @Transactional
+    public void changePassword(OfficeUserPasswordChangeRequest request) {
+        OfficeUser currentUser = SecurityUtil.getCurrentUser()
+                .map(CustomUserDetails::getUserEntity)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+
+        SecurityUtil.validatePasswordStrength(request.getNewPassword());
+
+        if (passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPasswordHash())) {
+            throw new BusinessException(ErrorCode.SAME_PASSWORD_NOT_ALLOWED);
+        }
+
+        currentUser.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        officeUserRepository.save(currentUser);
+    }
 }
