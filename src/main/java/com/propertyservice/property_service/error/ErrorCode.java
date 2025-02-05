@@ -10,6 +10,7 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "409", "중복된 이메일 입니다."),
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "사용자를 찾을 수 없습니다."),
+    INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, "401", "사용자 인증 정보가 올바르지 않습니다."),
 
     // 공통 에러
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "40001", "잘못된 요청입니다."),
@@ -21,7 +22,6 @@ public enum ErrorCode {
 
     // 사용자 관련 에러
     DUPLICATE_USER(HttpStatus.CONFLICT, "40901", "중복된 사용자입니다."),
-    INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, "40102", "사용자 인증 정보가 올바르지 않습니다."),
 
     // 비즈니스 로직 관련 에러
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "40403", "주문을 찾을 수 없습니다."),

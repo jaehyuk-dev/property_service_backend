@@ -22,10 +22,11 @@ spring:
       max-file-size: 10MB # 파일 업로드 요청 시 하나의 파일 크기 10MB로 제한
       max-request-size: 100MB # 파일 업로드 요청 시 모든 파일의 크기의합 100MB로 제한
 
-  jwt:
-    scecret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwYWlrYmVhbkBnbWFpbC5jb20iLCJuYW1lIjoiTGVlIEphZXl1ayIsImlhdCI6MTUxNjIzOTAyMn0.pclgCT5sT9cJAv8F1yV2FhJXMcPrS8LCeaRzM41la9U
-    expiration: 36000             # 토큰 만료 시간 (초 단위, 예: 1시간)
-    issuer: property-service      # 발급자(issuer) 정보
+jwt:
+  header: Authorization
+  secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwYWlrYmVhbkBnbWFpbC5jb20iLCJuYW1lIjoiTGVlIEphZXl1ayIsImlhdCI6MTUxNjIzOTAyMn0.pclgCT5sT9cJAv8F1yV2FhJXMcPrS8LCeaRzM41la9U
+  expiration: 36000
+  issuer: property-service
 
 logging:
   level:
