@@ -2,6 +2,7 @@ package com.propertyservice.property_service.controller;
 
 import com.propertyservice.property_service.dto.common.ApiResponseDto;
 import com.propertyservice.property_service.dto.common.SuccessResponseDto;
+import com.propertyservice.property_service.dto.office.LoginRequest;
 import com.propertyservice.property_service.dto.office.OfficeRegisterRequest;
 import com.propertyservice.property_service.dto.office.OfficeRegisterResponse;
 import com.propertyservice.property_service.dto.office.OfficeUserSignUpRequest;
@@ -14,6 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +34,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
 
     @Operation(summary = "회원가입", description = "회원가입 합니다.")
     @ApiResponses(value = {
@@ -43,6 +48,23 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponseDto<String>> signUpUser(@Validated @RequestBody OfficeUserSignUpRequest request) {
         authService.signUpUser(request);
-        return ResponseEntity.ok(new SuccessResponseDto<>("Success"));
+        return ResponseEntity.ok(new SuccessResponseDto<>("Sign Up Success"));
+    }
+
+
+    @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인을 수행합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "로그인 실패",
+                    content = @Content(mediaType = "application/json"))
+    })
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponseDto<String>> login(@RequestBody LoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        return ResponseEntity.ok(new SuccessResponseDto<>("Login Success"));
     }
 }
