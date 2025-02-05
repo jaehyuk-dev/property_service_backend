@@ -1,15 +1,13 @@
 package com.propertyservice.property_service.domain.office;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "office_users")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class OfficeUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

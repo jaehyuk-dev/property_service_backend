@@ -1,5 +1,6 @@
 package com.propertyservice.property_service.config;
 
+import com.propertyservice.property_service.jwt.JWTFilter;
 import com.propertyservice.property_service.jwt.JWTUtil;
 import com.propertyservice.property_service.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -64,8 +65,9 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated());
         http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
         //세션 설정
         http
                 .sessionManagement((session) -> session
