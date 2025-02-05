@@ -1,5 +1,6 @@
 package com.propertyservice.property_service.config;
 
+import com.propertyservice.property_service.dto.office.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.Nullable;
@@ -10,25 +11,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
 
 @Configurable
-public class AuditorAwareImpl implements AuditorAware<String> {
+public class AuditorAwareImpl implements AuditorAware<Long> {
 
     @Override
     @Nullable
-    public Optional<String> getCurrentAuditor() {
+    public Optional<Long> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        // 인증되지 않은 경우
         if (authentication == null || !authentication.isAuthenticated()) {
-            return Optional.empty(); // 인증되지 않은 경우
+            return Optional.empty();
         }
 
         Object principal = authentication.getPrincipal();
 
-        // UserDetails 타입이면 사용자 이름 반환
-        if (principal instanceof UserDetails) {
-            return Optional.of(((UserDetails) principal).getUsername());
+        // CustomUserDetails로 캐스팅
+        if (principal instanceof CustomUserDetails customUserDetails) {
+            return Optional.of(customUserDetails.getUserEntity().getUserId());
         }
 
-        // 인증 정보가 문자열로 저장된 경우
-        return Optional.of(principal.toString());
+        // principal이 예상 타입이 아닌 경우
+        return Optional.empty();
     }
 }

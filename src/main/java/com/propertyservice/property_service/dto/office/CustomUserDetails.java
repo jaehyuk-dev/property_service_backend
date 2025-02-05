@@ -26,6 +26,11 @@ public class CustomUserDetails implements UserDetails {
         return authorities;
     }
 
+    // 사용자 엔티티 반환
+    public OfficeUser getUserEntity() {
+        return userEntity;
+    }
+
     @Override
     public String getPassword() {
         return userEntity.getPasswordHash();
