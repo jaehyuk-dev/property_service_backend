@@ -24,7 +24,10 @@ spring:
 
 logging:
   level:
-    org.hibernate.type: trace # 콘솔창에 조건에 바인딩되는 값 및 조회결과 출력
+    root: INFO # 기본 로깅 레벨을 INFO로 설정
+    org.springframework.security: DEBUG # Spring Security의 인증 관련 로그 출력
+    org.hibernate.SQL: DEBUG # Hibernate SQL 실행 로그 활성화
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # SQL 바인딩 값까지 출력
 
 springdoc:
   api-docs:
