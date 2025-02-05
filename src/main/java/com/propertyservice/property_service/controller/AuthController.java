@@ -61,10 +61,6 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDto<String>> login(@RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-
         return ResponseEntity.ok(new SuccessResponseDto<>("Login Success"));
     }
 }
