@@ -1,27 +1,39 @@
 spring:
   datasource:
-    url: jdbc:postgresql://dev-db-host:5432/dev_db
-    username: dev_user
-    password: dev_password
+    url: jdbc:postgresql://158.247.203.225:5432/property_service_dev
+    username: admin
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+      show-sql: true # 콘솔창에 sql 출력
+      open-in-view: false # 영속성 컨텍스트의 생존 범위를 서비스 계층으로 한정
 
   servlet:
     multipart:
       max-file-size: 10MB # 파일 업로드 요청 시 하나의 파일 크기 10MB로 제한
       max-request-size: 100MB # 파일 업로드 요청 시 모든 파일의 크기의합 100MB로 제한
 
+jwt:
+  header: Authorization
+  secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwYWlrYmVhbkBnbWFpbC5jb20iLCJuYW1lIjoiTGVlIEphZXl1ayIsImlhdCI6MTUxNjIzOTAyMn0.pclgCT5sT9cJAv8F1yV2FhJXMcPrS8LCeaRzM41la9U
+  expiration: 36000
+  issuer: property-service
+
 logging:
   level:
-    org.hibernate.type: trace # 콘솔창에 조건에 바인딩되는 값 및 조회결과 출
+    root: INFO # 기본 로깅 레벨을 INFO로 설정
+    org.springframework.security: DEBUG # Spring Security의 인증 관련 로그 출력
+    org.hibernate.SQL: DEBUG # Hibernate SQL 실행 로그 활성화
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # SQL 바인딩 값까지 출력
 
 springdoc:
   api-docs:
