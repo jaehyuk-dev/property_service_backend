@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum Role {
-    ADMIN(10, "대표"), // 대표자
-    USER(20, "직원"); // 일반 사용자
+    ADMIN(11, "대표"), // 대표자
+    USER(12, "직원"); // 일반 사용자
 
     private final int value; // 권한 값
     private final String label; // 표시용 라벨

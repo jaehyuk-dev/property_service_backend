@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.domain;
+package com.propertyservice.property_service.domain.common;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public abstract class BaseEntity {
 
     @CreatedBy
     @Column(updatable = false)
-    private Long createdBy;
+    private Long createdByUserId;
 
     @LastModifiedBy
-    private Long modifiedBy;
+    private Long modifiedByUserId;
 }
