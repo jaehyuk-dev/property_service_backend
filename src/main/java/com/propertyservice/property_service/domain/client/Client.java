@@ -71,4 +71,8 @@ public class Client extends BaseEntity {
         this.type = type;
         this.moveInDate = moveInDate;
     }
+
+    public void updateClientStatus(ClientStatus status) {
+        this.status = status;
+    }
 }

@@ -10,6 +10,7 @@ import com.propertyservice.property_service.domain.common.eums.TransactionType;
 import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.property.Building;
 import com.propertyservice.property_service.domain.property.Property;
+import com.propertyservice.property_service.domain.revenue.Revenue;
 import com.propertyservice.property_service.dto.client.*;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
@@ -19,6 +20,7 @@ import com.propertyservice.property_service.repository.client.ClientRepository;
 import com.propertyservice.property_service.repository.client.ShowingPropertyRepository;
 import com.propertyservice.property_service.repository.office.OfficeUserRepository;
 import com.propertyservice.property_service.repository.property.PropertyRepository;
+import com.propertyservice.property_service.repository.revenue.RevenueRepository;
 import com.propertyservice.property_service.repository.schedule.ScheduleRepository;
 import com.propertyservice.property_service.utils.DateTimeUtil;
 import com.propertyservice.property_service.utils.PriceFormatter;
@@ -44,6 +46,7 @@ public class ClientService {
     private final OfficeUserRepository officeUserRepository;
     private final ShowingPropertyRepository showingPropertyRepository;
     private final PropertyRepository propertyRepository;
+    private final RevenueRepository revenueRepository;
 
     @Transactional
     public void registerClient(ClientRegisterRequest request) {
@@ -236,5 +239,32 @@ public class ClientService {
                             .build()
             );
         });
+    }
+
+    @Transactional
+    public void updateClientStatus(ClientStatusUpdateRequest request) {
+        clientRepository.findById(request.getClientId()).orElseThrow(
+                () -> new BusinessException(ErrorCode.CLIENT_NOT_FOUND)
+        ).updateClientStatus(
+                ClientStatus.fromValue(request.getNewStatusCode())
+        );
+        if(ClientStatus.fromValue(request.getNewStatusCode()).equals(ClientStatus.CONTRACT_COMPLETED)){
+            revenueRepository.save(
+                    Revenue.builder()
+                            .showingProperty(showingPropertyRepository.findById(request.getShowingPropertyId()).orElseThrow(
+                                    () -> new BusinessException(ErrorCode.PROPERTY_NOT_FOUND)
+                            ))
+                            .client(clientRepository.findById(request.getClientId()).orElseThrow(
+                                    () -> new BusinessException(ErrorCode.CLIENT_NOT_FOUND)
+                            ))
+                            .property(propertyRepository.findById(request.getPropertyId()).orElseThrow(
+                                    () -> new BusinessException(ErrorCode.PROPERTY_NOT_FOUND)
+                            ))
+                            .commissionFee(request.getCommissionFee())
+                            .moveInDate(request.getMoveInDate())
+                            .moveOutDate(request.getMoveOutDate())
+                            .build()
+            );
+        }
     }
 }

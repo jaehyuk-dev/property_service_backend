@@ -41,6 +41,21 @@ public class ClientController {
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
 
+    @Operation(summary = "고객 정보 수정", description = "고객 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PutMapping("/")
+    public ResponseEntity<ApiResponseDto<String>> updateClientDetail(@Validated @RequestBody ClientDetailUpdateRequest request) {
+        clientService.updateClientDetail(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
     @Operation(summary = "고객 목록", description = "고객 목록을 조죄합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success",
@@ -129,11 +144,7 @@ public class ClientController {
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
 
-    // todo 고객 상태 변경 api
-
-    // todo 고객 정보 수정 api
-
-    @Operation(summary = "고객 정보 수정", description = "고객 정보를 수정합니다.")
+    @Operation(summary = "고객 상태 변경", description = "고객의 상태를 변경합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success",
                     content = @Content(mediaType = "application/json")),
@@ -142,9 +153,9 @@ public class ClientController {
             @ApiResponse(responseCode = "500", description = "Uncheck Error",
                     content = @Content(mediaType = "application/json")),
     })
-    @PutMapping("/")
-    public ResponseEntity<ApiResponseDto<String>> updateClientDetail(@Validated @RequestBody ClientDetailUpdateRequest request) {
-        clientService.updateClientDetail(request);
+    @PutMapping("/status")
+    public ResponseEntity<ApiResponseDto<String>> updateClientStatus(@Validated @RequestBody ClientStatusUpdateRequest request) {
+        clientService.updateClientStatus(request);
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
 

@@ -24,7 +24,7 @@ public class ShowingProperty {
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "property_id2", nullable = false)
+    @JoinColumn(name = "property_id", nullable = false)
     private Property property;
 
     @Builder
