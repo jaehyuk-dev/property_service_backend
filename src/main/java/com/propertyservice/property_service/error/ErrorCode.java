@@ -14,6 +14,10 @@ public enum ErrorCode {
     SAME_PASSWORD_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "400", "이전과 같은 비밀번호는 사용할 수 없습니다."),
     WEAK_PASSWORD(HttpStatus.UNAUTHORIZED, "400", "비밀번호는 최소 8자 이상, 숫자 포함, 특수문자 포함해야합니다."),
 
+    CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "고객을 찾을 수 없습니다."),
+    SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "일정을 찾을 수 없습니다."),
+    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "건물을 찾을 수 없습니다."),
+    PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "매물을 찾을 수 없습니다."),
 
 
     // 공통 에러

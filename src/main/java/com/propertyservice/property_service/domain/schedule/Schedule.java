@@ -4,6 +4,7 @@ import com.propertyservice.property_service.domain.client.Client;
 import com.propertyservice.property_service.domain.common.BaseEntity;
 import com.propertyservice.property_service.domain.office.OfficeUser;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,4 +43,18 @@ public class Schedule extends BaseEntity {
 
     @Column(name = "is_completed", nullable = false)
     private boolean isCompleted = false; // 완료 여부 (기본값: false)
+
+    @Builder
+    public Schedule(OfficeUser picUser, LocalDateTime date, Client client, ScheduleType scheduleType, String remark, boolean isCompleted) {
+        this.picUser = picUser;
+        this.date = date;
+        this.client = client;
+        this.scheduleType = scheduleType;
+        this.remark = remark;
+        this.isCompleted = isCompleted;
+    }
+
+    public void updateComplete(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 }
