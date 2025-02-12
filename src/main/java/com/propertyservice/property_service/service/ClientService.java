@@ -3,6 +3,7 @@ package com.propertyservice.property_service.service;
 import com.propertyservice.property_service.domain.client.Client;
 import com.propertyservice.property_service.domain.client.ClientExpectedTransactionType;
 import com.propertyservice.property_service.domain.client.ClientRemark;
+import com.propertyservice.property_service.domain.client.ShowingProperty;
 import com.propertyservice.property_service.domain.client.enums.ClientStatus;
 import com.propertyservice.property_service.domain.common.eums.Gender;
 import com.propertyservice.property_service.domain.common.eums.TransactionType;
@@ -17,6 +18,7 @@ import com.propertyservice.property_service.repository.client.ClientRemarkReposi
 import com.propertyservice.property_service.repository.client.ClientRepository;
 import com.propertyservice.property_service.repository.client.ShowingPropertyRepository;
 import com.propertyservice.property_service.repository.office.OfficeUserRepository;
+import com.propertyservice.property_service.repository.property.PropertyRepository;
 import com.propertyservice.property_service.repository.schedule.ScheduleRepository;
 import com.propertyservice.property_service.utils.DateTimeUtil;
 import com.propertyservice.property_service.utils.PriceFormatter;
@@ -41,6 +43,7 @@ public class ClientService {
     private final ScheduleRepository scheduleRepository;
     private final OfficeUserRepository officeUserRepository;
     private final ShowingPropertyRepository showingPropertyRepository;
+    private final PropertyRepository propertyRepository;
 
     @Transactional
     public void registerClient(ClientRegisterRequest request) {
@@ -171,5 +174,41 @@ public class ClientService {
             );
         });
         return clientRemarkList;
+    }
+
+    @Transactional
+    public void createClientRemark(ClientRemarkRequest request){
+        clientRemarkRepository.save(
+               ClientRemark.builder()
+                       .client(clientRepository.findById(request.getClientId()).orElseThrow(
+                               () -> new BusinessException(ErrorCode.CLIENT_NOT_FOUND)
+                       ))
+                       .remark(request.getRemark())
+                       .build()
+        );
+    }
+
+    @Transactional
+    public void removeClientRemark(Long clientId){
+        clientRemarkRepository.deleteById(clientId);
+    }
+
+    @Transactional
+    public void createShowingProperty(ShowingPropertyRegisterRequest request) {
+        showingPropertyRepository.save(
+                ShowingProperty.builder()
+                        .client(clientRepository.findById(request.getClientId()).orElseThrow(
+                                () -> new BusinessException(ErrorCode.CLIENT_NOT_FOUND)
+                        ))
+                        .property(propertyRepository.findById(request.getPropertyId()).orElseThrow(
+                                () -> new BusinessException(ErrorCode.PROPERTY_NOT_FOUND)
+                        ))
+                        .build()
+        );
+    }
+
+    @Transactional
+    public void removeShowingProperty(Long showingPropertyId){
+        scheduleRepository.deleteById(showingPropertyId);
     }
 }

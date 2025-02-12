@@ -1,9 +1,6 @@
 package com.propertyservice.property_service.controller;
 
-import com.propertyservice.property_service.dto.client.ClientDetailResponse;
-import com.propertyservice.property_service.dto.client.ClientRegisterRequest;
-import com.propertyservice.property_service.dto.client.ClientSearchCondition;
-import com.propertyservice.property_service.dto.client.ClientSummaryResponse;
+import com.propertyservice.property_service.dto.client.*;
 import com.propertyservice.property_service.dto.common.ApiResponseDto;
 import com.propertyservice.property_service.dto.common.SuccessResponseDto;
 import com.propertyservice.property_service.service.ClientService;
@@ -70,5 +67,65 @@ public class ClientController {
     @GetMapping("/{clientId}")
     public ResponseEntity<ApiResponseDto<ClientDetailResponse>> searchClientDetail(@PathVariable Long clientId) {
         return ResponseEntity.ok(new SuccessResponseDto<>(clientService.searchClientDetail(clientId)));
+    }
+
+    @Operation(summary = "고객 특이사항 등록", description = "고객의 특이사항을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PostMapping("/remark")
+    public ResponseEntity<ApiResponseDto<String>> createClientRemark(@Validated @RequestBody ClientRemarkRequest request) {
+        clientService.createClientRemark(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
+    @Operation(summary = "고객 특이사항 삭제", description = "고객의 특이사항을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @DeleteMapping("/remark/{clientRemarkId}")
+    public ResponseEntity<ApiResponseDto<String>> removeClientRemark(@PathVariable Long clientRemarkId) {
+        clientService.removeClientRemark(clientRemarkId);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
+    @Operation(summary = "고객 보여줄 매물 등록", description = "고객의 보여줄 매물을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PostMapping("/showing-property")
+    public ResponseEntity<ApiResponseDto<String>> createShowingProperty(@Validated @RequestBody ShowingPropertyRegisterRequest request) {
+        clientService.createShowingProperty(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
+    @Operation(summary = "고객 보여줄 매물 삭제", description = "고객의 보여줄 매물 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @DeleteMapping("/showing-property/{showingPropertyId}")
+    public ResponseEntity<ApiResponseDto<String>> removeShowingProperty(@PathVariable Long showingPropertyId) {
+        clientService.removeShowingProperty(showingPropertyId);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
 }

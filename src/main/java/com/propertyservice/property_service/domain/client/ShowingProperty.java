@@ -2,6 +2,7 @@ package com.propertyservice.property_service.domain.client;
 
 import com.propertyservice.property_service.domain.property.Property;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,5 +26,11 @@ public class ShowingProperty {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id2", nullable = false)
     private Property property;
+
+    @Builder
+    public ShowingProperty(Client client, Property property) {
+        this.client = client;
+        this.property = property;
+    }
 }
 

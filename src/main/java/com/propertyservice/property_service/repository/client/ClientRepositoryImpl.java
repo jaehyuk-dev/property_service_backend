@@ -4,6 +4,7 @@ import com.propertyservice.property_service.dto.client.ClientSearchCondition;
 import com.propertyservice.property_service.dto.client.ClientSummaryResponse;
 import com.propertyservice.property_service.dto.client.QClientSummaryResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -52,7 +53,7 @@ public class ClientRepositoryImpl implements ClientRepositoryCustom {
             case "담당자" -> officeUser.name.containsIgnoreCase(keyword);
             case "고객" -> client.name.containsIgnoreCase(keyword);
             case "고객 전화번호" -> client.phoneNumber.containsIgnoreCase(keyword);
-            default -> null; // 잘못된 searchType이면 필터 미적용
+            default -> Expressions.booleanTemplate("false"); // ❗잘못된 경우 필터링        };
         };
     }
 }

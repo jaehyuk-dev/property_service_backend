@@ -3,6 +3,7 @@ package com.propertyservice.property_service.domain.property;
 import com.propertyservice.property_service.domain.common.BaseEntity;
 import com.propertyservice.property_service.domain.common.eums.TransactionType;
 import com.propertyservice.property_service.domain.common.eums.TransactionTypeConverter;
+import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.property.enums.HeatingType;
 import com.propertyservice.property_service.domain.property.enums.HeatingTypeConverter;
 import jakarta.persistence.*;
@@ -23,6 +24,10 @@ public class Property extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "property_id", updatable = false, nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private OfficeUser picUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id", nullable = false)
