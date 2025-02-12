@@ -1,5 +1,7 @@
 package com.propertyservice.property_service.domain.office;
 
+import com.propertyservice.property_service.domain.office.enums.Role;
+import com.propertyservice.property_service.domain.office.enums.RoleConverter;
 import jakarta.persistence.*;
 import lombok.*;
 

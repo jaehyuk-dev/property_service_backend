@@ -1,11 +1,11 @@
-package com.propertyservice.property_service.domain.common;
+package com.propertyservice.property_service.domain.common.eums;
 
 import lombok.Getter;
 
 @Getter
 public enum TransactionType {
-    MONTHLY(31, "월세"),
-    JEONSE(32, "전세"),
+    MONTHLY(61, "월세"),
+    JEONSE(62, "전세"),
     SHORTTERM(64, "단기");
 
     private final int value;

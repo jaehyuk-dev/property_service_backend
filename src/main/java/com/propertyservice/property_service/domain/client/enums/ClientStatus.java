@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.domain.client;
+package com.propertyservice.property_service.domain.client.enums;
 
 import lombok.Getter;
 

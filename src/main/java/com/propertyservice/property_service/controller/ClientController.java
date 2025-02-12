@@ -1,5 +1,6 @@
 package com.propertyservice.property_service.controller;
 
+import com.propertyservice.property_service.dto.client.ClientDetailResponse;
 import com.propertyservice.property_service.dto.client.ClientRegisterRequest;
 import com.propertyservice.property_service.dto.client.ClientSearchCondition;
 import com.propertyservice.property_service.dto.client.ClientSummaryResponse;
@@ -55,5 +56,19 @@ public class ClientController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponseDto<List<ClientSummaryResponse>>> searchClientSummaryList(ClientSearchCondition condition) {
         return ResponseEntity.ok(new SuccessResponseDto<>(clientService.searchClientSummaryList(condition)));
+    }
+
+    @Operation(summary = "고객 상세 조회", description = "고객 상세 정보를 조죄합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @GetMapping("/{clientId}")
+    public ResponseEntity<ApiResponseDto<ClientDetailResponse>> searchClientDetail(@PathVariable Long clientId) {
+        return ResponseEntity.ok(new SuccessResponseDto<>(clientService.searchClientDetail(clientId)));
     }
 }

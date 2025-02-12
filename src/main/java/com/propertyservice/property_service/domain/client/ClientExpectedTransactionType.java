@@ -1,7 +1,7 @@
 package com.propertyservice.property_service.domain.client;
 
-import com.propertyservice.property_service.domain.common.TransactionType;
-import com.propertyservice.property_service.domain.common.TransactionTypeConverter;
+import com.propertyservice.property_service.domain.common.eums.TransactionType;
+import com.propertyservice.property_service.domain.common.eums.TransactionTypeConverter;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

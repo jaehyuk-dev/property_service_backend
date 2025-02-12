@@ -1,8 +1,10 @@
 package com.propertyservice.property_service.domain.client;
 
+import com.propertyservice.property_service.domain.client.enums.ClientStatus;
+import com.propertyservice.property_service.domain.client.enums.ClientStatusConverter;
 import com.propertyservice.property_service.domain.common.BaseEntity;
-import com.propertyservice.property_service.domain.common.Gender;
-import com.propertyservice.property_service.domain.common.GenderConverter;
+import com.propertyservice.property_service.domain.common.eums.Gender;
+import com.propertyservice.property_service.domain.common.eums.GenderConverter;
 import com.propertyservice.property_service.domain.office.OfficeUser;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -11,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,7 +26,7 @@ public class Client extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pic_user", nullable = false)
+    @JoinColumn(name = "pic_user_id", nullable = false)
     private OfficeUser picUser;
 
     @Convert(converter = ClientStatusConverter.class)

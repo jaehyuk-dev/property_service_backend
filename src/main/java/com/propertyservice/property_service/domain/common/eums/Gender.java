@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.domain.common;
+package com.propertyservice.property_service.domain.common.eums;
 
 import lombok.Getter;
 

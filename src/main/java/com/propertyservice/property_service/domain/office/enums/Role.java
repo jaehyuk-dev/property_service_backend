@@ -1,4 +1,4 @@
-package com.propertyservice.property_service.domain.office;
+package com.propertyservice.property_service.domain.office.enums;
 
 import lombok.Getter;
 

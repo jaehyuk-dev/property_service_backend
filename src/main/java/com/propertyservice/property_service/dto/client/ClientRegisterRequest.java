@@ -1,6 +1,5 @@
 package com.propertyservice.property_service.dto.client;
 
-import com.propertyservice.property_service.domain.common.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
