@@ -7,6 +7,8 @@ import com.propertyservice.property_service.domain.client.ClientStatus;
 import com.propertyservice.property_service.domain.common.Gender;
 import com.propertyservice.property_service.domain.common.TransactionType;
 import com.propertyservice.property_service.dto.client.ClientRegisterRequest;
+import com.propertyservice.property_service.dto.client.ClientSearchCondition;
+import com.propertyservice.property_service.dto.client.ClientSummaryResponse;
 import com.propertyservice.property_service.repository.client.ClientExpectedTransactionTypeRepository;
 import com.propertyservice.property_service.repository.client.ClientRemarkRepository;
 import com.propertyservice.property_service.repository.client.ClientRepository;
@@ -14,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -67,5 +71,9 @@ public class ClientService {
                         .remark(remark)
                         .build()
         );
+    }
+
+    public List<ClientSummaryResponse> searchClientSummaryList (ClientSearchCondition condition){
+        return clientRepository.searchClientSummaryList(condition, authService.getCurrentUserEntity().getOffice().getOfficeId());
     }
 }
