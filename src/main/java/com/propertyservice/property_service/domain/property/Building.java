@@ -4,6 +4,7 @@ import com.propertyservice.property_service.domain.common.BaseEntity;
 import com.propertyservice.property_service.domain.property.enums.BuildingType;
 import com.propertyservice.property_service.domain.property.enums.BuildingTypeConverter;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,4 +57,20 @@ public class Building extends BaseEntity {
 
     @Column(name = "common_password", length = 255)
     private String commonPassword;
+
+    @Builder
+    public Building(String name, String zoneCode, String address, String jibunAddress, Short parkingSpace, String floorCount, String mainDoorDirection, Short completionYear, BuildingType buildingType, Short elevatorCount, Boolean hasIllegal, String commonPassword) {
+        this.name = name;
+        this.zoneCode = zoneCode;
+        this.address = address;
+        this.jibunAddress = jibunAddress;
+        this.parkingSpace = parkingSpace;
+        this.floorCount = floorCount;
+        this.mainDoorDirection = mainDoorDirection;
+        this.completionYear = completionYear;
+        this.buildingType = buildingType;
+        this.elevatorCount = elevatorCount;
+        this.hasIllegal = hasIllegal;
+        this.commonPassword = commonPassword;
+    }
 }

@@ -2,8 +2,11 @@ package com.propertyservice.property_service.service;
 
 import com.propertyservice.property_service.domain.property.Building;
 import com.propertyservice.property_service.domain.property.Property;
+import com.propertyservice.property_service.domain.property.enums.BuildingType;
+import com.propertyservice.property_service.dto.property.BuildingRegisterRequest;
 import com.propertyservice.property_service.dto.property.PropertySearchCondition;
 import com.propertyservice.property_service.dto.property.PropertySummaryResponse;
+import com.propertyservice.property_service.repository.property.BuildingRepository;
 import com.propertyservice.property_service.repository.property.PropertyRepository;
 import com.propertyservice.property_service.utils.PriceFormatter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import java.util.List;
 public class PropertyService {
     private final PropertyRepository propertyRepository;
     private final AuthService authService;
+    private final BuildingRepository buildingRepository;
 
     public List<PropertySummaryResponse> searchPropertySummaryList(PropertySearchCondition condition) {
         List<PropertySummaryResponse> propertySummaryResponseList = new ArrayList<>();
@@ -40,5 +44,25 @@ public class PropertyService {
             );
         }
         return propertySummaryResponseList;
+    }
+
+    @Transactional
+    public void registerBuilding(BuildingRegisterRequest request) {
+        buildingRepository.save(
+                Building.builder()
+                        .name(request.getBuildingName())
+                        .zoneCode(request.getZonecode())
+                        .address(request.getBuildingAddress())
+                        .jibunAddress(request.getJibunAddress())
+                        .parkingSpace(request.getParkSpace())
+                        .floorCount(request.getFloorCount())
+                        .mainDoorDirection(request.getMainDoorDirection())
+                        .completionYear(request.getCompletionYear())
+                        .buildingType(BuildingType.fromValue(request.getBuildingTypeCode()))
+                        .elevatorCount(request.getElevatorCount())
+                        .hasIllegal(request.isHasIllegal())
+                        .commonPassword(request.getCommonPassword())
+                        .build()
+        );
     }
 }

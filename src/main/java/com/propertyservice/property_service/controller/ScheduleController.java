@@ -35,11 +35,10 @@ public class ScheduleController {
                     content = @Content(mediaType = "application/json")),
     })
     @PostMapping("/")
-    public ResponseEntity<ApiResponseDto<String>> cretteSchedule(@Validated @RequestBody ScheduleRegisterRequest request) {
+    public ResponseEntity<ApiResponseDto<String>> createSchedule(@Validated @RequestBody ScheduleRegisterRequest request) {
         scheduleService.createSchedule(request);
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
-
 
     @Operation(summary = "일정 상태 변경", description = "일정 상태를 변경 합니다.")
     @ApiResponses(value = {

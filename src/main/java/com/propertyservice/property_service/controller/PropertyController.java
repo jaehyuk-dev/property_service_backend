@@ -1,8 +1,10 @@
 package com.propertyservice.property_service.controller;
 
+import com.propertyservice.property_service.domain.property.Building;
 import com.propertyservice.property_service.dto.client.ClientDetailResponse;
 import com.propertyservice.property_service.dto.common.ApiResponseDto;
 import com.propertyservice.property_service.dto.common.SuccessResponseDto;
+import com.propertyservice.property_service.dto.property.BuildingRegisterRequest;
 import com.propertyservice.property_service.dto.property.PropertySearchCondition;
 import com.propertyservice.property_service.dto.property.PropertySummaryResponse;
 import com.propertyservice.property_service.service.PropertyService;
@@ -14,10 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,4 +42,18 @@ public class PropertyController {
     public ResponseEntity<ApiResponseDto<List<PropertySummaryResponse>>> searchClientDetail(PropertySearchCondition condition) {
         return ResponseEntity.ok(new SuccessResponseDto<>(propertyService.searchPropertySummaryList(condition)));
     }
-}
+
+    @Operation(summary = "건물 등록", description = "건물을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PostMapping("/building")
+    public ResponseEntity<ApiResponseDto<String>> registerBuilding(@Validated @RequestBody BuildingRegisterRequest request) {
+        propertyService.registerBuilding(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }}
