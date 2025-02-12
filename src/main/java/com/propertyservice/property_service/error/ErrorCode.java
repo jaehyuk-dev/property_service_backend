@@ -19,6 +19,11 @@ public enum ErrorCode {
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "건물을 찾을 수 없습니다."),
     PROPERTY_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "매물을 찾을 수 없습니다."),
 
+    MAX_BUILDING_PHOTO_LENGTH(HttpStatus.BAD_REQUEST, "402", "최대 3장의 이미지까지만 업로드할 수 있습니다."),
+    INVALID_REPRESENTATION_PHOTO(HttpStatus.BAD_REQUEST, "402", "대표 이미지 인덱스가 유효하지 않습니다."),
+
+    IMAGE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "405", "이미지 저장 중 오류 발생"),
+
 
     // 공통 에러
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "40001", "잘못된 요청입니다."),

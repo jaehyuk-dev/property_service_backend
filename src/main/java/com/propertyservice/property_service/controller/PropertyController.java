@@ -56,4 +56,5 @@ public class PropertyController {
     public ResponseEntity<ApiResponseDto<String>> registerBuilding(@Validated @RequestBody BuildingRegisterRequest request) {
         propertyService.registerBuilding(request);
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
-    }}
+    }
+}
