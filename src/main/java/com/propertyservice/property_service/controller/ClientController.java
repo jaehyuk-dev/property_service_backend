@@ -128,4 +128,8 @@ public class ClientController {
         clientService.removeShowingProperty(showingPropertyId);
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
+
+    // todo 고객 상태 변경 api
+
+    // todo 고객 정보 수정 api
 }
