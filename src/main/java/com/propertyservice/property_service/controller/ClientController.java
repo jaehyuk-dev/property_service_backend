@@ -132,4 +132,20 @@ public class ClientController {
     // todo 고객 상태 변경 api
 
     // todo 고객 정보 수정 api
+
+    @Operation(summary = "고객 정보 수정", description = "고객 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PutMapping("/")
+    public ResponseEntity<ApiResponseDto<String>> updateClientDetail(@Validated @RequestBody ClientDetailUpdateRequest request) {
+        clientService.updateClientDetail(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
 }

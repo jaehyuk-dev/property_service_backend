@@ -211,4 +211,30 @@ public class ClientService {
     public void removeShowingProperty(Long showingPropertyId){
         scheduleRepository.deleteById(showingPropertyId);
     }
+
+    @Transactional
+    public void updateClientDetail(ClientDetailUpdateRequest request) {
+        Client client = clientRepository.findById(request.getClientId()).orElseThrow(
+                () -> new BusinessException(ErrorCode.CLIENT_NOT_FOUND)
+        );
+
+        client.updateClientDetail(
+                request.getClientName(),
+                request.getClientPhoneNumber(),
+                request.getClientSource(),
+                request.getClientType(),
+                request.getClientExpectedMoveInDate()
+        );
+
+        clientExpectedTransactionTypeRepository.deleteByClient(client);
+
+        request.getClientExpectedTransactionTypeList().forEach(transactionType -> {
+            clientExpectedTransactionTypeRepository.save(
+                    ClientExpectedTransactionType.builder()
+                            .client(client)
+                            .expectedTransactionType(TransactionType.valueOf(transactionType))
+                            .build()
+            );
+        });
+    }
 }

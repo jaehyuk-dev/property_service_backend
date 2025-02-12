@@ -63,4 +63,12 @@ public class Client extends BaseEntity {
         this.type = type;
         this.moveInDate = moveInDate;
     }
+
+    public void updateClientDetail(String name, String phoneNumber, String source, String type, LocalDate moveInDate) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.source = source;
+        this.type = type;
+        this.moveInDate = moveInDate;
+    }
 }
