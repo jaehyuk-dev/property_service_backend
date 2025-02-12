@@ -3,6 +3,7 @@ package com.propertyservice.property_service.service;
 import com.propertyservice.property_service.domain.office.Office;
 import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.office.Role;
+import com.propertyservice.property_service.dto.auth.CustomUserDetails;
 import com.propertyservice.property_service.dto.office.OfficeUserSignUpRequest;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
@@ -10,6 +11,8 @@ import com.propertyservice.property_service.repository.office.OfficeRepository;
 import com.propertyservice.property_service.repository.office.OfficeUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +48,14 @@ public class AuthService {
                 .build();
 
         officeUserRepository.save(user);
+    }
+
+
+    public OfficeUser getCurrentUserEntity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            return ((CustomUserDetails) authentication.getPrincipal()).getUserEntity();
+        }
+        throw new BusinessException(ErrorCode.USER_NOT_FOUND);
     }
 }

@@ -3,6 +3,8 @@ package com.propertyservice.property_service.config;
 import com.propertyservice.property_service.jwt.JWTFilter;
 import com.propertyservice.property_service.jwt.JWTUtil;
 import com.propertyservice.property_service.jwt.LoginFilter;
+import com.propertyservice.property_service.service.CustomUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
-
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
-    }
+    private final CustomUserDetailsService customUserDetailsService;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -57,8 +56,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/*").permitAll()    // todo 현재 모든 요청에 대해 열려있음
-                        .requestMatchers("/api/auth/login", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/**").permitAll()    // todo 현재 모든 요청에 대해 열려있음
+//                        .requestMatchers("/api/auth/office", "/api/auth/login").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",  // Swagger 관련 엔드포인트
                                 "/swagger-ui/**",   // Swagger UI
@@ -66,7 +65,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated());
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil, customUserDetailsService), LoginFilter.class);
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         //세션 설정

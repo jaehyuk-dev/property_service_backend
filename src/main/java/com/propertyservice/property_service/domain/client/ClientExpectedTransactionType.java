@@ -3,6 +3,7 @@ package com.propertyservice.property_service.domain.client;
 import com.propertyservice.property_service.domain.common.TransactionType;
 import com.propertyservice.property_service.domain.common.TransactionTypeConverter;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "client_expected_trade_type")
+@Table(name = "client_expected_transaction_type")
 @NoArgsConstructor
-public class ClientExpectedTradeType {
+public class ClientExpectedTransactionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long expectedTransactionId;
@@ -24,4 +25,10 @@ public class ClientExpectedTradeType {
     @Convert(converter = TransactionTypeConverter.class)
     @Column(name = "expected_transaction_type", nullable = false)
     private TransactionType expectedTransactionType;
+
+    @Builder
+    public ClientExpectedTransactionType(Client client, TransactionType expectedTransactionType) {
+        this.client = client;
+        this.expectedTransactionType = expectedTransactionType;
+    }
 }
