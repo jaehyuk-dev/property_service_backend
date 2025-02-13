@@ -1,8 +1,9 @@
-package com.propertyservice.property_service.domain.property.enums;
+package com.propertyservice.property_service.domain.property;
 
-import com.propertyservice.property_service.domain.property.MaintenanceItemTypeConverter;
-import com.propertyservice.property_service.domain.property.Property;
+import com.propertyservice.property_service.domain.property.enums.MaintenanceItemType;
+import com.propertyservice.property_service.domain.property.enums.MaintenanceItemTypeConverter;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +27,11 @@ public class MaintenanceItem {
     @Convert(converter = MaintenanceItemTypeConverter.class)
     @Column(name = "maintenance_item")
     private MaintenanceItemType maintenanceItem;
+
+    @Builder
+    public MaintenanceItem(MaintenanceItemType maintenanceItem, Property property) {
+        this.maintenanceItem = maintenanceItem;
+        this.property = property;
+    }
 }
+

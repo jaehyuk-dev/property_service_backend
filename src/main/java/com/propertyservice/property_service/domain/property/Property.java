@@ -7,10 +7,12 @@ import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.property.enums.HeatingType;
 import com.propertyservice.property_service.domain.property.enums.HeatingTypeConverter;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -64,10 +66,10 @@ public class Property extends BaseEntity {
     private Double supplyArea;
 
     @Column(name = "approval_date", nullable = false)
-    private LocalDateTime approvalDate;
+    private LocalDate approvalDate;
 
     @Column(name = "move_in_date", nullable = false)
-    private LocalDateTime availableMoveInDate;
+    private LocalDate availableMoveInDate;
 
     @Convert(converter = TransactionTypeConverter.class)
     @Column(name = "property_transaction_type", nullable = false)
@@ -88,5 +90,30 @@ public class Property extends BaseEntity {
     @Convert(converter = HeatingTypeConverter.class)
     @Column(name = "heating_type", nullable = false)
     private HeatingType heatingType;
+
+    @Builder
+
+    public Property(OfficeUser picUser, Building building, String ownerName, String ownerPhoneNumber, String ownerRelation, String roomNumber, String propertyType, String propertyFloor, String roomBathCount, String mainRoomDirection, Double exclusiveArea, Double supplyArea, LocalDate approvalDate, LocalDate availableMoveInDate, TransactionType transactionType, Long propertyPrice1, Long propertyPrice2, Long maintenancePrice, Boolean parkingAvailable, HeatingType heatingType) {
+        this.picUser = picUser;
+        this.building = building;
+        this.ownerName = ownerName;
+        this.ownerPhoneNumber = ownerPhoneNumber;
+        this.ownerRelation = ownerRelation;
+        this.roomNumber = roomNumber;
+        this.propertyType = propertyType;
+        this.propertyFloor = propertyFloor;
+        this.roomBathCount = roomBathCount;
+        this.mainRoomDirection = mainRoomDirection;
+        this.exclusiveArea = exclusiveArea;
+        this.supplyArea = supplyArea;
+        this.approvalDate = approvalDate;
+        this.availableMoveInDate = availableMoveInDate;
+        this.transactionType = transactionType;
+        this.propertyPrice1 = propertyPrice1;
+        this.propertyPrice2 = propertyPrice2;
+        this.maintenancePrice = maintenancePrice;
+        this.parkingAvailable = parkingAvailable;
+        this.heatingType = heatingType;
+    }
 }
 

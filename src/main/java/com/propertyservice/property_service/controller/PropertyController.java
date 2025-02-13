@@ -85,4 +85,19 @@ public class PropertyController {
         return ResponseEntity.ok(new SuccessResponseDto<>(propertyService.searchBuildingSummaryList(condition)));
     }
 
+    @Operation(summary = "매물 등록", description = "매물을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @PostMapping("/")
+    public ResponseEntity<ApiResponseDto<String>> registerProperty(@Validated @RequestBody PropertyRegisterRequest request) {
+        propertyService.registerProperty(request);
+        return ResponseEntity.ok(new SuccessResponseDto<>("success"));
+    }
+
 }

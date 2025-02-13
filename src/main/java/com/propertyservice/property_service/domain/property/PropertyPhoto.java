@@ -2,6 +2,7 @@ package com.propertyservice.property_service.domain.property;
 
 import com.propertyservice.property_service.domain.common.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,4 +28,11 @@ public class PropertyPhoto extends BaseEntity {
 
     @Column(name = "photo_url", nullable = false, columnDefinition = "TEXT")
     private String photoUrl;
+
+    @Builder
+    public PropertyPhoto(Property property, Boolean isMain, String photoUrl) {
+        this.property = property;
+        this.isMain = isMain;
+        this.photoUrl = photoUrl;
+    }
 }

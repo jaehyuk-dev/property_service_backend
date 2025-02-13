@@ -1,7 +1,9 @@
 package com.propertyservice.property_service.domain.property.enums;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter(autoApply = true)
 public class BuildingTypeConverter implements AttributeConverter<BuildingType, Integer> {
 
     @Override

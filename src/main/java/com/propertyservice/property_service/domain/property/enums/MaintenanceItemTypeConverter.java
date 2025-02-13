@@ -1,8 +1,9 @@
-package com.propertyservice.property_service.domain.property;
+package com.propertyservice.property_service.domain.property.enums;
 
-import com.propertyservice.property_service.domain.property.enums.MaintenanceItemType;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter(autoApply = true)
 public class MaintenanceItemTypeConverter implements AttributeConverter<MaintenanceItemType, Integer> {
     @Override
     public Integer convertToDatabaseColumn(MaintenanceItemType maintenanceItemType) {
