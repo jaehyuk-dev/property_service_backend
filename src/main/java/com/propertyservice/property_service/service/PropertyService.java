@@ -1,6 +1,7 @@
 package com.propertyservice.property_service.service;
 
 import com.propertyservice.property_service.domain.common.eums.TransactionType;
+import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.property.*;
 import com.propertyservice.property_service.domain.property.enums.BuildingType;
 import com.propertyservice.property_service.domain.property.enums.HeatingType;
@@ -9,11 +10,14 @@ import com.propertyservice.property_service.domain.property.enums.PropertyOption
 import com.propertyservice.property_service.dto.property.*;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
+import com.propertyservice.property_service.repository.office.OfficeRepository;
+import com.propertyservice.property_service.repository.office.OfficeUserRepository;
 import com.propertyservice.property_service.repository.property.*;
 import com.propertyservice.property_service.utils.PriceFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.PropertyMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +40,10 @@ public class PropertyService {
     private final MaintenanceItemRepository maintenanceItemRepository;
     private final PropertyOptionRepository propertyOptionRepository;
     private final PropertyPhotoRepository propertyPhotoRepository;
+    private final BuildingRemarkRepository buildingRemarkRepository;
+    private final BuildingRepositoryImpl buildingRepositoryImpl;
+    private final OfficeRepository officeRepository;
+    private final OfficeUserRepository officeUserRepository;
 
     public List<PropertySummaryResponse> searchPropertySummaryList(PropertySearchCondition condition) {
         List<PropertySummaryResponse> propertySummaryResponseList = new ArrayList<>();
@@ -234,5 +242,44 @@ public class PropertyService {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.IMAGE_ERROR);
         }
+    }
+
+    public BuildingDetailResponse searchBuildingDetail(Long buildingId) {
+        Building building = buildingRepository.findById(buildingId).orElseThrow(
+                () -> new BusinessException(ErrorCode.BUILDING_NOT_FOUND)
+        );
+        List<BuildingRemarkDto> buildingRemarkDtoList = new ArrayList<>();
+        buildingRemarkRepository.findByBuilding(building).forEach(buildingRemark -> {
+            buildingRemarkDtoList.add(
+                    BuildingRemarkDto.builder()
+                            .remarkId(buildingRemark.getId())
+                            .remark(buildingRemark.getRemark())
+                            .createdAt(buildingRemark.getCreatedDate())
+                            .createdBy(
+                                    officeUserRepository.findById(buildingRemark.getCreatedByUserId())
+                                            .map(OfficeUser::getName) // `Optional`이 비어 있으면 자동으로 `null` 반환
+                                            .orElse(null) // `null`이면 createdBy 필드가 비어 있게 유지
+                            )
+                            .build()
+            );
+        });
+
+        return BuildingDetailResponse.builder()
+                .buildingId(building.getId())
+                .picUserName(building.getPicUser().getName())
+                .buildingName(building.getName())
+                .zoneCode(building.getZoneCode())
+                .buildingAddress(building.getAddress())
+                .jibunAddress(building.getJibunAddress())
+                .parkingSpace(building.getParkingSpace())
+                .floorcount(building.getFloorCount())
+                .mainDoorDirection(building.getMainDoorDirection())
+                .completionYear(building.getCompletionYear())
+                .buildingType(building.getBuildingType().getLabel())
+                .elevatorCount(building.getElevatorCount())
+                .hasIllegal(building.getHasIllegal())
+                .commonPassword(building.getCommonPassword())
+                .buildingRemarkList(buildingRemarkDtoList)
+                .build();
     }
 }
