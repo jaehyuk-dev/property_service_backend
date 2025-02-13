@@ -3,3 +3,7 @@ spring:
     name: property-service
   profiles:
     active: dev
+
+  web:
+    resources:
+      static-locations: classpath:/static/, file:./static/

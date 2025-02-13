@@ -56,7 +56,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/**").permitAll()    // todo 현재 모든 요청에 대해 열려있음
+                        .requestMatchers("/api/**", "/static/**").permitAll()    // todo 현재 모든 요청에 대해 열려있음
 //                        .requestMatchers("/api/auth/office", "/api/auth/login").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",  // Swagger 관련 엔드포인트

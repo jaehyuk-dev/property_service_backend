@@ -4,9 +4,7 @@ import com.propertyservice.property_service.domain.property.Building;
 import com.propertyservice.property_service.domain.property.BuildingPhoto;
 import com.propertyservice.property_service.domain.property.Property;
 import com.propertyservice.property_service.domain.property.enums.BuildingType;
-import com.propertyservice.property_service.dto.property.BuildingRegisterRequest;
-import com.propertyservice.property_service.dto.property.PropertySearchCondition;
-import com.propertyservice.property_service.dto.property.PropertySummaryResponse;
+import com.propertyservice.property_service.dto.property.*;
 import com.propertyservice.property_service.error.ErrorCode;
 import com.propertyservice.property_service.error.exception.BusinessException;
 import com.propertyservice.property_service.repository.property.BuildingPhotoRepository;
@@ -59,6 +57,7 @@ public class PropertyService {
     public void registerBuilding(BuildingRegisterRequest request) {
         Building building = buildingRepository.save(
                 Building.builder()
+                        .picUSer(authService.getCurrentUserEntity())
                         .name(request.getBuildingName())
                         .zoneCode(request.getZonecode())
                         .address(request.getBuildingAddress())
@@ -117,5 +116,28 @@ public class PropertyService {
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.IMAGE_ERROR);
         }
+    }
+
+    @Transactional
+    public void updateBuilding(BuildingUpdateRequest request) {
+        buildingRepository.findById(request.getBuildingId()).orElseThrow(
+                ()-> new BusinessException(ErrorCode.BUILDING_NOT_FOUND)
+        ).updateBuilding(
+                request.getZonecode(),
+                request.getAddress(),
+                request.getJibunAddress(),
+                request.getParkingSpace(),
+                request.getFloorCount(),
+                request.getMainDoorDirection(),
+                request.getCompletionYear(),
+                request.getBuildingTypeCode(),
+                request.getElevatorCount(),
+                request.isHasIllegal(),
+                request.getCommonPassword()
+        );
+    }
+
+    public List<BuildingSummaryResponse> searchBuildingSummaryList(BuildingSearchCondition condition) {
+        return List.of(null);
     }
 }

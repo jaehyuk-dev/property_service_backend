@@ -1,6 +1,7 @@
 package com.propertyservice.property_service.domain.property;
 
 import com.propertyservice.property_service.domain.common.BaseEntity;
+import com.propertyservice.property_service.domain.office.OfficeUser;
 import com.propertyservice.property_service.domain.property.enums.BuildingType;
 import com.propertyservice.property_service.domain.property.enums.BuildingTypeConverter;
 import jakarta.persistence.*;
@@ -20,6 +21,10 @@ public class Building extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "building_id", updatable = false, nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private OfficeUser picUser;
 
     @Column(name = "building_name", length = 255)
     private String name;
@@ -59,7 +64,8 @@ public class Building extends BaseEntity {
     private String commonPassword;
 
     @Builder
-    public Building(String name, String zoneCode, String address, String jibunAddress, Short parkingSpace, String floorCount, String mainDoorDirection, Short completionYear, BuildingType buildingType, Short elevatorCount, Boolean hasIllegal, String commonPassword) {
+    public Building(OfficeUser picUSer, String name, String zoneCode, String address, String jibunAddress, Short parkingSpace, String floorCount, String mainDoorDirection, Short completionYear, BuildingType buildingType, Short elevatorCount, Boolean hasIllegal, String commonPassword) {
+        this.picUser = picUSer;
         this.name = name;
         this.zoneCode = zoneCode;
         this.address = address;
@@ -73,4 +79,19 @@ public class Building extends BaseEntity {
         this.hasIllegal = hasIllegal;
         this.commonPassword = commonPassword;
     }
+
+    public void updateBuilding(String zonecode, String address, String jibunAddress, Short parkSpace, String floorCount, String mainDoorDirection, Short completionYear, int buildingTypeCode, Short elevatorCount, boolean hasIllegal, String commonPassword) {
+        this.zoneCode = zonecode;
+        this.address = address;
+        this.jibunAddress = jibunAddress;
+        this.parkingSpace = parkSpace;
+        this.floorCount = floorCount;
+        this.mainDoorDirection = mainDoorDirection;
+        this.completionYear = completionYear;
+        this.buildingType = BuildingType.fromValue(buildingTypeCode);
+        this.elevatorCount = elevatorCount;
+        this.hasIllegal = hasIllegal;
+        this.commonPassword = commonPassword;
+    }
+
 }
