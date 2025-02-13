@@ -7,5 +7,5 @@ import com.propertyservice.property_service.dto.property.PropertySummaryResponse
 import java.util.List;
 
 public interface PropertyRepositoryCustom {
-    List<Property> searchPropertySummaryList(PropertySearchCondition condition, long officeId);
+    List<Property> searchPropertyList(PropertySearchCondition condition, long officeId);
 }

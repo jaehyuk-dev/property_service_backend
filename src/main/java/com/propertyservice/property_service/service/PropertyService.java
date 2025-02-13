@@ -16,8 +16,6 @@ import com.propertyservice.property_service.repository.property.*;
 import com.propertyservice.property_service.utils.PriceFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.PropertyMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +45,7 @@ public class PropertyService {
 
     public List<PropertySummaryResponse> searchPropertySummaryList(PropertySearchCondition condition) {
         List<PropertySummaryResponse> propertySummaryResponseList = new ArrayList<>();
-        for (Property property : propertyRepository.searchPropertySummaryList(condition, authService.getCurrentUserEntity().getOffice().getOfficeId())) {
+        for (Property property : propertyRepository.searchPropertyList(condition, authService.getCurrentUserEntity().getOffice().getOfficeId())) {
             Building building = property.getBuilding();
             String formattedPrice = PriceFormatter.format(property.getPropertyPrice1(), property.getPropertyPrice2(), property.getTransactionType());
 
@@ -281,5 +279,34 @@ public class PropertyService {
                 .commonPassword(building.getCommonPassword())
                 .buildingRemarkList(buildingRemarkDtoList)
                 .build();
+    }
+
+    public List<PropertyResponse> searchPropertyList(PropertySearchCondition condition) {
+        List<PropertyResponse> propertyResponseList = new ArrayList<>();
+        for (Property property : propertyRepository.searchPropertyList(condition, authService.getCurrentUserEntity().getOffice().getOfficeId())) {
+            Building building = property.getBuilding();
+            String address = building.getAddress() + " " + property.getRoomNumber();
+            String formattedPrice = PriceFormatter.format(property.getPropertyPrice1(), property.getPropertyPrice2(), property.getTransactionType());
+
+            String photoUrl = propertyPhotoRepository.findByProperty(property).stream()
+                    .filter(PropertyPhoto::getIsMain)
+                    .map(PropertyPhoto::getPhotoUrl)
+                    .findFirst()
+                    .orElse("");
+
+            propertyResponseList.add(
+                    PropertyResponse.builder()
+                            .propertyId(property.getId())
+                            .buildingName(property.getBuilding().getName())
+                            .propertyAddress(address)
+                            .propertyTransactionType(property.getTransactionType().getLabel())
+                            .propertyPrice(formattedPrice)
+                            .photoUrl(photoUrl)
+                            .build()
+            );
+
+        }
+
+        return propertyResponseList;
     }
 }

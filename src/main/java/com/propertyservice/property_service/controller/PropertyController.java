@@ -114,4 +114,24 @@ public class PropertyController {
         return ResponseEntity.ok(new SuccessResponseDto<>("success"));
     }
 
+    // 매물 목록 조회
+    @Operation(summary = "매물 목록 조회", description = "매물 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Checked Error",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Uncheck Error",
+                    content = @Content(mediaType = "application/json")),
+    })
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponseDto<List<PropertyResponse>>> searchPropertyList(PropertySearchCondition condition) {
+        return ResponseEntity.ok(new SuccessResponseDto<>(propertyService.searchPropertyList(condition)));
+    }
+
+
+    // 매물 상세 조회
+
+    // 매물 수정
+
 }

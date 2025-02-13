@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static com.propertyservice.property_service.domain.property.QProperty.property;
+import static com.propertyservice.property_service.domain.property.QBuilding.building;
 import static com.propertyservice.property_service.domain.office.QOfficeUser.officeUser;
 import static com.propertyservice.property_service.domain.office.QOffice.office;
 
@@ -22,7 +23,7 @@ public class PropertyRepositoryImpl implements PropertyRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Property> searchPropertySummaryList(PropertySearchCondition condition, long officeId) {
+    public List<Property> searchPropertyList(PropertySearchCondition condition, long officeId) {
         return queryFactory
                 .select(
                         property
@@ -30,6 +31,7 @@ public class PropertyRepositoryImpl implements PropertyRepositoryCustom {
                 .from(property)
                 .leftJoin(property.picUser, officeUser)
                 .leftJoin(officeUser.office, office)
+                .leftJoin(property.building, building)
                 .where(
                         office.officeId.eq(officeId),
                         searchByType(condition.getSearchType(), condition.getKeyword())
@@ -45,8 +47,13 @@ public class PropertyRepositoryImpl implements PropertyRepositoryCustom {
         return switch (searchType) {
             case "담당자" -> officeUser.name.containsIgnoreCase(keyword);
             case "임대인" -> property.ownerName.containsIgnoreCase(keyword);
-            default -> Expressions.booleanTemplate("false"); // ❗잘못된 경우 필터링        };
+            case "매물 주소" -> building.address.containsIgnoreCase(keyword)
+                    .or(building.jibunAddress.containsIgnoreCase(keyword))
+                    .or(property.roomNumber.containsIgnoreCase(keyword));
+            case "임대인 전화번호" -> property.ownerPhoneNumber.containsIgnoreCase(keyword);
+            default -> Expressions.booleanTemplate("false"); // ❗잘못된 경우 필터링
         };
     }
+
 
 }
