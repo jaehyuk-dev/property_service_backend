@@ -16,6 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -53,17 +57,46 @@ public class SecurityConfig {
         http
                 .httpBasic(AbstractHttpConfigurer::disable);
 
-        //경로별 인가 작업
         http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/**", "/static/**").permitAll()    // todo 현재 모든 요청에 대해 열려있음
-//                        .requestMatchers("/api/auth/office", "/api/auth/login").permitAll()
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOriginPatterns(List.of("*"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    config.setAllowedHeaders(Collections.singletonList("*")); // 헤더 허용.
+                    config.setMaxAge(3600L);
+                    config.setExposedHeaders(Collections.singletonList("Authorization")); // 백엔드에서 프론트로 토큰 값 보내는 것을 허용.
+                    return config;
+                }));
+
+        // ✅ requestMatchers()를 먼저 배치
+        http
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/api/**",
+                                "/static/**",
                                 "/v3/api-docs/**",  // Swagger 관련 엔드포인트
-                                "/swagger-ui/**",   // Swagger UI
-                                "/swagger-ui.html"  // Swagger HTML 파일
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated() // 🔥 마지막에 위치해야 함
+                );
+        //        //경로별 인가 작업
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/api/**", "/static/**").permitAll()    // todo 현재 모든 요청에 대해 열려있음
+////                        .requestMatchers("/api/auth/office", "/api/auth/login").permitAll()
+//                        .requestMatchers(
+//                                "/v3/api-docs/**",  // Swagger 관련 엔드포인트
+//                                "/swagger-ui/**",   // Swagger UI
+//                                "/swagger-ui.html"  // Swagger HTML 파일
+//                        ).permitAll()
+//                        .anyRequest().authenticated());
         http
                 .addFilterBefore(new JWTFilter(jwtUtil, customUserDetailsService), LoginFilter.class);
         http
