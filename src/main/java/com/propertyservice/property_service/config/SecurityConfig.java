@@ -67,10 +67,10 @@ public class SecurityConfig {
                     config.setAllowedOriginPatterns(List.of("*"));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
-                    config.setAllowCredentials(true);
+//                    config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*")); // 헤더 허용.
                     config.setMaxAge(3600L);
-                    config.setExposedHeaders(Collections.singletonList("Authorization")); // 백엔드에서 프론트로 토큰 값 보내는 것을 허용.
+                    config.setExposedHeaders(Collections.singletonList("Authorization")); // 백엔드에서 프론트로 토큰 값EAZ 보내는 것을 허용.
                     return config;
                 }));
 
